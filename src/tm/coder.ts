@@ -3,11 +3,10 @@ import {
   TransitionMap,
   ObjectMap,
   TransitionSource,
-  TransitionTarget,
+  TransitionTarget
 } from "./types";
-import { display } from "./plantUML";
 
-export const decodeTM = (turingMachine: string): TransitionMap =>
+export const parseTM = (turingMachine: string): TransitionMap =>
   new ObjectMap(
     turingMachine
       .split("11")
@@ -15,20 +14,24 @@ export const decodeTM = (turingMachine: string): TransitionMap =>
       .map(([currentQ, inputSymbol, nextQ, writeSymbol, direction]): [
         TransitionSource,
         TransitionTarget
-      ] => [
-        {
-          currentQ,
-          inputSymbol,
-        },
-        { nextQ, writeSymbol, direction: direction === 1 ? "L" : "R" },
-      ])
+      ] =>
+        [
+          {
+            currentQ,
+            inputSymbol
+          },
+          { nextQ, writeSymbol, direction: direction === 1 ? "L" : "R" }
+        ]
+      )
   );
 // decode input
 export const decodeInput = (input: string): Sym[] => {
+  if(!input.includes("1"))
+    return [];
   return input.split("1").map((zeros): number => zeros.length);
 };
 
-export const encode = (str) => {
+export const encodeTM = (str: string): string => {
   const fns = [];
   const ret = str
     .trim()
@@ -42,13 +45,19 @@ export const encode = (str) => {
         parseInt(inputSymbol) + 1 || 3,
         parseInt(nextQ.substring(1)) + 1,
         parseInt(writeSymbol) + 1,
-        direction === "L" ? 1 : 2,
+        direction === "L" ? 1 : 2
       ]
         .map((nr) => "0".repeat(nr))
         .join("1");
     })
     .join("11");
 
-  display(fns);
   return ret;
 };
+
+export const encodeInput = (str: string): string => {
+  return str.split("").map(symbol => parseInt(symbol)+1)
+  .map((nr) => "0".repeat(nr))
+  .join("1");
+  })
+}

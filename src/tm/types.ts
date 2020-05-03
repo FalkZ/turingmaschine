@@ -7,6 +7,7 @@ type Direction = "L" | "R";
 
 export const DEFAULT_BAND_SYMBOL = 3;
 export const DEFAULT_TM_STATE = 1;
+export const DEFAULT_TM_ACCEPTED_STATE = 2;
 
 export interface TransitionSource {
   currentQ: State;
@@ -19,9 +20,8 @@ export interface TransitionTarget {
 }
 export class ObjectMap<K, V> extends Map<K, V> {
   get(obj) {
-    return [...this.entries()].filter(([key, value]) =>
-      isEqual(obj, key)
-    )?.[0]?.[1];
+    return [...this.entries()].filter(([key, value]) => isEqual(obj, key))?.[0]
+      ?.[1];
   }
 }
 export type TransitionMap = ObjectMap<TransitionSource, TransitionTarget>;
