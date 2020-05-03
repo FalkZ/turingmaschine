@@ -5,9 +5,9 @@ export type Sym = number; // string[1]
 
 type Direction = "L" | "R";
 
-export const DEFAULT_BAND_SYMBOL = 3;
-export const DEFAULT_TM_STATE = 1;
-export const DEFAULT_TM_ACCEPTED_STATE = 2;
+export const DEFAULT_BAND_SYMBOL = 2;
+export const DEFAULT_TM_STATE = 0;
+export const DEFAULT_TM_ACCEPTED_STATE = 1;
 
 export interface TransitionSource {
   currentQ: State;

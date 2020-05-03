@@ -6,7 +6,7 @@ class BandEntry {
   #symbol: Sym;
   constructor({
     previous,
-    next,
+    next
   }: {
     previous?: BandEntry;
     next?: BandEntry;
@@ -55,7 +55,7 @@ export class Band {
     this.#currentEntry = this.#currentEntry.R(symbol);
   }
   init(input: Sym[]) {
-    input.reverse().forEach((sym) => this.moveLeft(sym));
+    [...input].reverse().forEach((sym) => this.moveLeft(sym));
     this.moveRight(this.getSymbol());
   }
   getSymbols() {

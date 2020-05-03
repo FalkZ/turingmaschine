@@ -2,8 +2,9 @@ import { encodeTM, encodeInput } from "./tm/coder";
 import { UniversalTM } from "./tm/UniversalTM";
 interface Store {
   input: string;
-  encodedTM: ()=> string;
+  encodedTM: string;
   decodedTM: string;
+  _TM?: UniversalTM;
   TM: UniversalTM;
 }
 export const store: Store = {
@@ -16,6 +17,17 @@ Q2, 1, Q0, 1, R
 Q0, _, Q1, 0, R
 Q2, _, Q1, 1, R
   `.trim(),
-  get encodedTM: function (): string { return encodeTM(this.decodedTM) + "111" + encodeInput(this.input) },
-  TM: new UniversalTM("111")
+  get encodedTM(): string {
+    return encodeTM(this.decodedTM) + "111" + encodeInput(this.input);
+  },
+  reset: function() {
+    this._TM = new UniversalTM(this.encodedTM);
+  },
+  get TM() {
+    if (!this._TM) this._TM = new UniversalTM(this.encodedTM);
+    return this._TM;
+  },
+  set TM(tm) {
+    this._TM = tm;
+  }
 };

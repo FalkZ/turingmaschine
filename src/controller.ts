@@ -1,6 +1,6 @@
 import { encodeTM } from "./tm/coder";
 import { UniversalTM } from "./tm/UniversalTM";
-import { store } from "./Store";
+import { store } from "./store";
 import { ui } from "./ui";
 
 export const onChangeDecodedInput = (value) => {
@@ -36,5 +36,10 @@ export const step = () => {
   if (!store.TM.isFinished()) {
     store.TM.step();
   }
+  ui.requestUpdate();
+};
+
+export const reset = () => {
+  store.reset();
   ui.requestUpdate();
 };

@@ -8,7 +8,7 @@ import {
 } from "./types";
 
 import { Band } from "./Band";
-import { parseTM, decodeInput, encodeTM } from "./coder";
+import { parseTM, decodeTM, decodeInput, encodeTM } from "./coder";
 
 export class UniversalTM {
   #band: Band = new Band();
@@ -29,16 +29,6 @@ export class UniversalTM {
     console.log("Transitions:", this.#transitions);
     this.#initialDecodedInput = decodeInput(input);
     this.#band.init(this.#initialDecodedInput);
-  }
-
-  decodedTM(): string {
-    return [...this.#transitions.entries()].map(([source, target]) =>
-      `Q${source.currentQ}, ${source.inputSymbol}, Q${target.nextQ}, ${target.writeSymbol}, ${target.direction}`
-    ).join("\n");
-  }
-
-  decodeInput(): string {
-    return this.#initialDecodedInput.join("");
   }
 
   step() {
@@ -77,35 +67,12 @@ export class UniversalTM {
   get band() {
     return this.#band;
   }
+
+  decodedTM(): string {
+    return decodeTM(this.#transitions);
+  }
+
+  decodedInput(): string {
+    return this.#initialDecodedInput.join("");
+  }
 }
-
-// #######################################################################
-// Main
-/*
-const input = `
-Q0, 0, Q0, 0, R
-Q1, 0, Q1, 0, R
-Q0, 1, Q1, 1, R
-Q1, 1, Q0, 1, R
-Q0, _, Q2, 0, R
-Q1, _, Q2, 1, R
-`;
-
-const example = encodeTM(input) + "111" + "01010100";
-const example2 = encodeTM(input) + "111" + "001010010100100";
-
-const universalTM = new UniversalTM(example2, 3);
-
-while (!universalTM.isFinished()) {
-  console.log("transition state", {
-    state: universalTM.state,
-    currentSymbol: universalTM.band.getSymbol()
-  });
-  console.log("symbols: ", universalTM.band.getSymbols());
-  universalTM.step();
-  console.log();
-}
-
-console.log("result: ");
-console.log("symbols: ", universalTM.band.getSymbols());
-*/

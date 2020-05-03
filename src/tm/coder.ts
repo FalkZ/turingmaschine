@@ -3,14 +3,15 @@ import {
   TransitionMap,
   ObjectMap,
   TransitionSource,
-  TransitionTarget
+  TransitionTarget,
+  DEFAULT_BAND_SYMBOL
 } from "./types";
 
 export const parseTM = (turingMachine: string): TransitionMap =>
   new ObjectMap(
     turingMachine
       .split("11")
-      .map((fn) => fn.split("1").map((zeros): number => zeros.length))
+      .map((fn) => fn.split("1").map((zeros): number => zeros.length-1))
       .map(([currentQ, inputSymbol, nextQ, writeSymbol, direction]): [
         TransitionSource,
         TransitionTarget
@@ -20,16 +21,31 @@ export const parseTM = (turingMachine: string): TransitionMap =>
             currentQ,
             inputSymbol
           },
-          { nextQ, writeSymbol, direction: direction === 1 ? "L" : "R" }
+          { nextQ, writeSymbol, direction: direction === 0 ? "L" : "R" }
         ]
       )
   );
-// decode input
+
+// DECODE
+export const decodeTM = (transitions: TransitionMap): string => {
+  return [...transitions.entries()].map(([source, target]) =>
+      `Q${source.currentQ}, ${source.inputSymbol}, Q${target.nextQ}, ${target.writeSymbol}, ${target.direction}`
+    ).join("\n");
+}
+
 export const decodeInput = (input: string): Sym[] => {
   if(!input.includes("1"))
     return [];
-  return input.split("1").map((zeros): number => zeros.length);
+  return input.split("1").map((zeros): number => zeros.length - 1);
 };
+
+// ENCODING
+
+const getInt = (str) => {
+  const match =  /.*([0-9]+).*/.exec(str);
+  if(match) return parseInt(match[1]);
+  return null;
+}
 
 export const encodeTM = (str: string): string => {
   const fns = [];
@@ -41,13 +57,13 @@ export const encodeTM = (str: string): string => {
     .map(([currentQ, inputSymbol, nextQ, writeSymbol, direction]) => {
       fns.push({ currentQ, inputSymbol, nextQ, writeSymbol, direction });
       return [
-        parseInt(currentQ.substring(1)) + 1,
-        parseInt(inputSymbol) + 1 || 3,
-        parseInt(nextQ.substring(1)) + 1,
-        parseInt(writeSymbol) + 1,
-        direction === "L" ? 1 : 2
+        getInt(currentQ),
+        getInt(inputSymbol)?? DEFAULT_BAND_SYMBOL,
+        getInt(nextQ) ,
+        getInt(writeSymbol) ,
+        direction === "L" ? 0 : 1
       ]
-        .map((nr) => "0".repeat(nr))
+        .map((nr) => "0".repeat(nr + 1))
         .join("1");
     })
     .join("11");
