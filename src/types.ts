@@ -1,14 +1,13 @@
 import isEqual from "lodash.isequal";
-// #######################################################################
-// TYPE DEFINITION
+
 export type State = number;
 export type Sym = number; // string[1]
 
 type Direction = "L" | "R";
-// DEFAULT VALUES
+
 export const DEFAULT_BAND_SYMBOL = 3;
 export const DEFAULT_TM_STATE = 1;
-// Transition
+
 export interface TransitionSource {
   currentQ: State;
   inputSymbol: Sym;

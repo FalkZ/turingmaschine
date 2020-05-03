@@ -5,6 +5,7 @@ import {
   TransitionSource,
   TransitionTarget,
 } from "./types";
+import { display } from "./plantUML";
 
 export const decodeTM = (turingMachine: string): TransitionMap =>
   new ObjectMap(
@@ -26,14 +27,17 @@ export const decodeTM = (turingMachine: string): TransitionMap =>
 export const decodeInput = (input: string): Sym[] => {
   return input.split("1").map((zeros): number => zeros.length);
 };
-export const encode = (str) =>
-  str
+
+export const encode = (str) => {
+  const fns = [];
+  const ret = str
     .trim()
     .split("\n")
     .map((str) => str.trim())
     .map((str) => str.split(",").map((v) => v.trim()))
-    .map(([currentQ, inputSymbol, nextQ, writeSymbol, direction]) =>
-      [
+    .map(([currentQ, inputSymbol, nextQ, writeSymbol, direction]) => {
+      fns.push({ currentQ, inputSymbol, nextQ, writeSymbol, direction });
+      return [
         parseInt(currentQ.substring(1)) + 1,
         parseInt(inputSymbol) + 1 || 3,
         parseInt(nextQ.substring(1)) + 1,
@@ -41,6 +45,10 @@ export const encode = (str) =>
         direction === "L" ? 1 : 2,
       ]
         .map((nr) => "0".repeat(nr))
-        .join("1")
-    )
+        .join("1");
+    })
     .join("11");
+
+  display(fns);
+  return ret;
+};

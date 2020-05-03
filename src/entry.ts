@@ -7,6 +7,7 @@ import {
 } from "./types";
 import { Band } from "./Band";
 import { decodeTM, decodeInput, encode } from "./coder";
+import "./ui";
 
 class UniversalTM {
   #band: Band = new Band();

@@ -1,6 +1,5 @@
 import { Sym, DEFAULT_BAND_SYMBOL } from "./types";
-// #######################################################################
-// Band
+
 class BandEntry {
   #previous: BandEntry = null;
   #next: BandEntry;
