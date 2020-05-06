@@ -7,6 +7,7 @@ interface Store {
   _TM?: UniversalTM;
   TM: UniversalTM;
 }
+
 export const store: Store = {
   input: "0001",
   decodedTM: `
@@ -20,7 +21,7 @@ Q2, _, Q1, 1, R
   get encodedTM(): string {
     return encodeTM(this.decodedTM) + "111" + encodeInput(this.input);
   },
-  reset: function() {
+  reset: function () {
     this._TM = new UniversalTM(this.encodedTM);
   },
   get TM() {
@@ -29,5 +30,5 @@ Q2, _, Q1, 1, R
   },
   set TM(tm) {
     this._TM = tm;
-  }
+  },
 };
