@@ -1,3 +1,4 @@
-dist
+dist/*
+!dist/loader.css
 node_modules
 .cache

@@ -6,7 +6,7 @@ import {
   onChangeDecodedInput,
   run,
   step,
-  reset
+  reset,
 } from "./controller";
 
 import { DEFAULT_BAND_SYMBOL } from "./tm/types";
@@ -30,7 +30,7 @@ export class UIBand extends LitElement {
   // name = "World";
 
   render() {
-    return html `
+    return html`
       <style>
         .band-item {
           display: inline-block;
@@ -47,11 +47,12 @@ export class UIBand extends LitElement {
         }
       </style>
       <div>
-        ${this.band.map((nr, index) =>
-      html `<div class="band-item" id=${index === 15 ? "active" : ""}>
+        ${this.band.map(
+          (nr, index) =>
+            html`<div class="band-item" id=${index === 15 ? "active" : ""}>
               ${nr === DEFAULT_BAND_SYMBOL ? "_" : nr}
             </div>`
-    )}
+        )}
       </div>
     `;
   }
@@ -59,9 +60,9 @@ export class UIBand extends LitElement {
 
 const errorMessage = () =>
   store.error
-    ? html `<div class="panel red">
- Fehler: ${store.error.message}
-  </div>`
+    ? html`<div class="panel red">
+        Fehler: ${store.error.message}
+      </div>`
     : "";
 
 @customElement("ui-main")
@@ -75,7 +76,7 @@ export class UIMain extends LitElement {
       store.TM.isFinished() || (store.error && store.error.isBlocking)
     );
 
-    return html `<div class="panel">
+    return html`<div class="panel">
       <h1>Deterministische Turingmaschine</h1>
       <h2>von Moritz Waser & Falk Zwimpfer</h2>
 
@@ -98,25 +99,32 @@ export class UIMain extends LitElement {
       onChangeDecodedInput(target.value)} ></input>
 
       <label>Input & Übergangsfunktionen Codiert</label>
-      <input id="encodedTM"  value=${store.encodedTM}  @change=${onChangeEncodedTM} ></input>
+      <input id="encodedTM"  value=${
+        store.encodedTM
+      }  @change=${onChangeEncodedTM} ></input>
       </div>
       </div>
       
       </div>
+      ${errorMessage()}
       <div class="panel blue">
       <label>Band</label>
       <ui-band .band=${store.TM.band.getSymbols()}></ui-band>
 
       <label>Aktueller Status: <span> Q${store.TM.state} </span></label>
-      <label>Anzahl Berechnungsschritte: <span>${store.TM.iterationCount}</span></label>
+      <label>Anzahl Berechnungsschritte: <span>${
+        store.TM.iterationCount
+      }</span></label>
 
       <button .disabled=${isFinished} @click=${run}>Run</button>
       <button .disabled=${isFinished} @click=${step}>Schritt</button>
       <button class="secondary"  @click=${reset}>Reset</button>
       </div>
-      ${errorMessage()}
+    
       <div class="panel blue">
-      <ui-diagram .transitions=${store.TM.transitions} .currentState=${store.TM.state}></ui-diagram>
+      <ui-diagram .transitions=${store.TM.transitions} .currentState=${
+      store.TM.state
+    }></ui-diagram>
       </div>
       `;
   }
