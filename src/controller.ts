@@ -1,6 +1,6 @@
 import { encodeTM } from "./tm/coder";
 import { UniversalTM } from "./tm/UniversalTM";
-import { store } from "./store";
+import { store } from "./Store";
 import { ui } from "./ui";
 
 export const onChangeDecodedInput = (value) => {

@@ -1,12 +1,12 @@
 import { LitElement, html, property, customElement } from "lit-element";
-import { store } from "./store";
+import { store } from "./Store";
 import {
   onChangeDecodedTM,
   onChangeEncodedTM,
   onChangeDecodedInput,
   run,
   step,
-  reset
+  reset,
 } from "./controller";
 
 export const ui = document.createElement("ui-main");
@@ -27,30 +27,30 @@ export class UIBand extends LitElement {
   // name = "World";
 
   render() {
-    return html `
-    <style>
-      .band-item{
-        display: inline-block;
-        width: 30px;
-        height: 30px;
-        background: #ccccdd77;
-        margin: 2px;
-        text-align: center;
-      }
-      #active{
-        margin-top: 0;
-        font-weight: bold;
-        background: #77F;
-      }
-    </style>
-    <div>
-      ${(this.band).map((str, index) =>
-      html `<div class="band-item" id=${index === 15
-        ? "active"
-        : ""}>${str}
-      </div>`
-    )}
-    </div>
+    return html`
+      <style>
+        .band-item {
+          display: inline-block;
+          width: 30px;
+          height: 30px;
+          background: #ccccdd77;
+          margin: 2px;
+          text-align: center;
+        }
+        #active {
+          margin-top: 0;
+          font-weight: bold;
+          background: #77f;
+        }
+      </style>
+      <div>
+        ${this.band.map(
+          (str, index) =>
+            html`<div class="band-item" id=${index === 15 ? "active" : ""}>
+              ${str}
+            </div>`
+        )}
+      </div>
     `;
   }
 }
@@ -64,7 +64,7 @@ export class UIMain extends LitElement {
   render() {
     const isFinished = store.TM.isFinished();
 
-    return html `<div class="panel">
+    return html`<div class="panel">
       <h1>Universelle Turingmaschine</h1>
       <h2>von Moritz Waser & Falk Zwimpfer</h2>
 
@@ -87,7 +87,9 @@ export class UIMain extends LitElement {
       onChangeDecodedInput(target.value)} ></input>
 
       <label>Input & Übergangsfunktionen Codiert</label>
-      <input id="encodedTM"  value=${store.encodedTM}  @change=${onChangeEncodedTM} ></input>
+      <input id="encodedTM"  value=${
+        store.encodedTM
+      }  @change=${onChangeEncodedTM} ></input>
       </div>
       </div>
       
