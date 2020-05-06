@@ -43,6 +43,7 @@ class BandEntry {
     return this.#symbol;
   }
 }
+
 export class Band {
   #currentEntry = new BandEntry();
   getSymbol() {

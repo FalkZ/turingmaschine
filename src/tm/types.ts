@@ -18,7 +18,32 @@ export interface TransitionTarget {
   writeSymbol: Sym;
   direction: Direction;
 }
+
+export class TMError extends Error {
+  #isBlocking: Boolean = false;
+
+  constructor(message: string, isBlocking: Boolean) {
+    super(message);
+    this.#isBlocking = isBlocking;
+  }
+
+  get isBlocking() {
+    return this.#isBlocking;
+  }
+}
+
 export class ObjectMap<K, V> extends Map<K, V> {
+  set(key: K, value: V): this {
+    if (this.get(key)) {
+      throw new TMError(
+        "Übergangsfunktionen sind nicht deterministisch",
+        true
+      );
+    }
+
+    super.set(key, value);
+    return this;
+  }
   get(obj) {
     return [...this.entries()].filter(([key, value]) => isEqual(obj, key))?.[0]
       ?.[1];

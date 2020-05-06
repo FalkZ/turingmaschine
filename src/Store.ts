@@ -1,11 +1,15 @@
 import { encodeTM, encodeInput } from "./tm/coder";
 import { UniversalTM } from "./tm/UniversalTM";
+import { TMError } from "./tm/types";
+
 interface Store {
+  reset: () => void;
   input: string;
   encodedTM: string;
   decodedTM: string;
   _TM?: UniversalTM;
   TM: UniversalTM;
+  error: TMError;
 }
 
 export const store: Store = {
@@ -21,7 +25,8 @@ Q2, _, Q1, 1, R
   get encodedTM(): string {
     return encodeTM(this.decodedTM) + "111" + encodeInput(this.input);
   },
-  reset: function () {
+  reset: function() {
+    this.error = undefined;
     this._TM = new UniversalTM(this.encodedTM);
   },
   get TM() {
@@ -31,4 +36,5 @@ Q2, _, Q1, 1, R
   set TM(tm) {
     this._TM = tm;
   },
+  error: undefined
 };

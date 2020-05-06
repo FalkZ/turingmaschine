@@ -4,7 +4,8 @@ import {
   TransitionTarget,
   State,
   DEFAULT_TM_STATE,
-  DEFAULT_TM_ACCEPTED_STATE
+  DEFAULT_TM_ACCEPTED_STATE, 
+  TMError
 } from "./types";
 
 import { Band } from "./Band";
@@ -17,6 +18,7 @@ export class UniversalTM {
 
   #acceptedQ: State;
   #currentQ: State = DEFAULT_TM_STATE;
+  #iterationCount: number = 0;
 
   constructor(
     serializedTM: string,
@@ -29,6 +31,10 @@ export class UniversalTM {
     console.log("Transitions:", this.#transitions);
     this.#initialDecodedInput = decodeInput(input);
     this.#band.init(this.#initialDecodedInput);
+  }
+
+  get transitions(){
+    return this.#transitions;
   }
 
   step() {
@@ -45,7 +51,7 @@ export class UniversalTM {
     console.log("target", transitionTarget);
 
     if (!transitionTarget) {
-      throw new Error("is stuck");
+      throw new TMError("Abfallzustand erreicht: keine weiteren Übergangsfunktionen", true);
     }
 
     // execute step
@@ -54,6 +60,7 @@ export class UniversalTM {
     } else this.#band.moveRight(transitionTarget.writeSymbol);
 
     this.#currentQ = transitionTarget.nextQ;
+    this.#iterationCount++;
   }
 
   isFinished(): boolean {
@@ -66,6 +73,10 @@ export class UniversalTM {
 
   get band() {
     return this.#band;
+  }
+
+  get iterationCount {
+    return this.#iterationCount;
   }
 
   decodedTM(): string {

@@ -4,8 +4,9 @@ import {
   ObjectMap,
   TransitionSource,
   TransitionTarget,
-  DEFAULT_BAND_SYMBOL
+  DEFAULT_BAND_SYMBOL, 
 } from "./types";
+
 
 export const parseTM = (turingMachine: string): TransitionMap =>
   new ObjectMap(

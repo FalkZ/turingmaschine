@@ -6,10 +6,13 @@ import {
   onChangeDecodedInput,
   run,
   step,
-  reset,
+  reset
 } from "./controller";
 
-export const ui = document.createElement("ui-main");
+import { DEFAULT_BAND_SYMBOL } from "./tm/types";
+import "./plantUML";
+
+export const ui: LitElement = document.createElement("ui-main");
 
 document.body.appendChild(ui);
 
@@ -27,7 +30,7 @@ export class UIBand extends LitElement {
   // name = "World";
 
   render() {
-    return html`
+    return html `
       <style>
         .band-item {
           display: inline-block;
@@ -40,20 +43,26 @@ export class UIBand extends LitElement {
         #active {
           margin-top: 0;
           font-weight: bold;
-          background: #77f;
+          background: #66f;
         }
       </style>
       <div>
-        ${this.band.map(
-          (str, index) =>
-            html`<div class="band-item" id=${index === 15 ? "active" : ""}>
-              ${str}
+        ${this.band.map((nr, index) =>
+      html `<div class="band-item" id=${index === 15 ? "active" : ""}>
+              ${nr === DEFAULT_BAND_SYMBOL ? "_" : nr}
             </div>`
-        )}
+    )}
       </div>
     `;
   }
 }
+
+const errorMessage = () =>
+  store.error
+    ? html `<div class="panel red">
+ Fehler: ${store.error.message}
+  </div>`
+    : "";
 
 @customElement("ui-main")
 export class UIMain extends LitElement {
@@ -62,10 +71,12 @@ export class UIMain extends LitElement {
   }
 
   render() {
-    const isFinished = store.TM.isFinished();
+    const isFinished = Boolean(
+      store.TM.isFinished() || (store.error && store.error.isBlocking)
+    );
 
-    return html`<div class="panel">
-      <h1>Universelle Turingmaschine</h1>
+    return html `<div class="panel">
+      <h1>Deterministische Turingmaschine</h1>
       <h2>von Moritz Waser & Falk Zwimpfer</h2>
 
       <p>
@@ -87,9 +98,7 @@ export class UIMain extends LitElement {
       onChangeDecodedInput(target.value)} ></input>
 
       <label>Input & Übergangsfunktionen Codiert</label>
-      <input id="encodedTM"  value=${
-        store.encodedTM
-      }  @change=${onChangeEncodedTM} ></input>
+      <input id="encodedTM"  value=${store.encodedTM}  @change=${onChangeEncodedTM} ></input>
       </div>
       </div>
       
@@ -98,11 +107,16 @@ export class UIMain extends LitElement {
       <label>Band</label>
       <ui-band .band=${store.TM.band.getSymbols()}></ui-band>
 
-      <label>Aktueller Status Q${store.TM.state}</label>
+      <label>Aktueller Status: <span> Q${store.TM.state} </span></label>
+      <label>Anzahl Berechnungsschritte: <span>${store.TM.iterationCount}</span></label>
 
       <button .disabled=${isFinished} @click=${run}>Run</button>
       <button .disabled=${isFinished} @click=${step}>Schritt</button>
       <button class="secondary"  @click=${reset}>Reset</button>
+      </div>
+      ${errorMessage()}
+      <div class="panel blue">
+      <ui-diagram .transitions=${store.TM.transitions} .currentState=${store.TM.state}></ui-diagram>
       </div>
       `;
   }
