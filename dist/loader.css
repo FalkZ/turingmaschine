@@ -1,6 +1,7 @@
 img {
   margin: 20px auto;
   display: table;
+  max-width: 100%;
 }
 
 .loader,

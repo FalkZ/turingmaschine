@@ -2,6 +2,7 @@ import { encodeTM, encodeInput } from "./tm/coder";
 import { UniversalTM } from "./tm/UniversalTM";
 import { TMError } from "./tm/types";
 import { multiplication } from "./multiplication";
+import { ui } from "./ui";
 
 interface Store {
   reset: () => void;
@@ -12,15 +13,16 @@ interface Store {
   TM: UniversalTM;
   error?: TMError;
   dictionary: string[];
+  collapseInput: boolean;
 }
 
 export const store: Store = {
-  input: localStorage.getItem("input") || "111_101",
+  input: localStorage.getItem("input") || "1110_101",
   decodedTM: localStorage.getItem("decodedTM") || multiplication,
   get encodedTM(): string {
     return encodeTM(this.decodedTM) + "111" + encodeInput(this.input);
   },
-  reset: function () {
+  reset: function() {
     this.error = undefined;
     this._TM = new UniversalTM(this.encodedTM);
   },
@@ -32,6 +34,16 @@ export const store: Store = {
     this._TM = tm;
   },
   dictionary: ["_", "0", "1"],
+  collapseInput: true
+};
+
+export const clearStorage = () => {
+  localStorage.removeItem("input");
+  localStorage.removeItem("decodedTM");
+
+  store.input = "1110_101";
+  store.decodedTM = multiplication;
+  ui.requestUpdate();
 };
 
 console.log(store.dictionary);

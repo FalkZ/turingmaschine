@@ -26,11 +26,15 @@ export const onChangeDecodedInput = (value) => {
 };
 
 export const onChangeEncodedTM = ({ target }) => {
-  let tm = new UniversalTM(target.value);
-  store.decodedTM = tm.decodedTM();
-  store.input = tm.decodedInput();
-
-  createTMandUpdateUI();
+  try {
+    let tm = new UniversalTM(target.value);
+    store.decodedTM = tm.decodedTM();
+    store.input = tm.decodedInput();
+    createTMandUpdateUI();
+  } catch (error) {
+    onError(error);
+  }
+  ui.requestUpdate();
 };
 
 export const onChangeDecodedTM = ({ target }) => {

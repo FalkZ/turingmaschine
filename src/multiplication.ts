@@ -1,4 +1,6 @@
 export const multiplication = `
+// Multiplikation
+// rechnet: 1110*101
 // gap erstellen
 Q0, 0, Q10, _, L
 Q10, _, Q20, O, R
@@ -91,5 +93,16 @@ Q95, _, Q4, _, L
 // rest löschen
 Q100, I, Q100, _, R
 Q100, O, Q100, _, R
-Q100, _, Q1, _, L
+Q100, _, Q101, _, L
+// reset der grenze
+Q101, _, Q101, _, L
+Q101, 0, Q102, 0, L
+Q101, O, Q102, 0, L
+Q101, 1, Q102, 1, L
+Q101, I, Q102, 1, L
+Q102, 0, Q102, 0, L
+Q102, O, Q102, 0, L
+Q102, 1, Q102, 1, L
+Q102, I, Q102, 1, L
+Q102, _, Q1, _, R
 `.trim();

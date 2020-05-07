@@ -10,7 +10,8 @@
   "dependencies": {
     "lit-element": "^2.3.1",
     "lodash.isequal": "^4.5.0",
-    "plantuml-encoder": "^1.4.0"
+    "plantuml-encoder": "^1.4.0",
+    "store": "^2.0.12"
   },
   "browserslist": [
     "> 5%"

@@ -38,7 +38,9 @@ export const decodeTM = (transitions: TransitionMap): string => {
   return [...transitions.entries()]
     .map(
       ([source, target]) =>
-        `Q${source.currentQ}, ${source.inputSymbol}, Q${target.nextQ}, ${target.writeSymbol}, ${target.direction}`
+        `Q${source.currentQ}, ${store.dictionary[source.inputSymbol]}, Q${
+          target.nextQ
+        }, ${store.dictionary[target.writeSymbol]}, ${target.direction}`
     )
     .join("\n");
 };
@@ -57,6 +59,7 @@ const getInt = (str) => {
 };
 
 export const encodeTM = (str: string): string => {
+  store.dictionary = ["_", "0", "1"];
   const fns = [];
   const ret = str
     .trim()

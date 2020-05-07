@@ -95,3 +95,27 @@ h2 {
 label span {
   font-weight: normal;
 }
+
+[data-collapse="true"] {
+  max-height: 130px;
+  overflow: auto;
+}
+.collapse {
+  margin: 0;
+  padding: 10px 0;
+  width: 25px;
+  height: 25px;
+  line-height: 0;
+  outline: none;
+  display: inline-block;
+}
+.reset {
+  margin-top: 0;
+  float: right;
+  background: #f22;
+}
+
+button {
+  cursor: pointer;
+  outline: none;
+}

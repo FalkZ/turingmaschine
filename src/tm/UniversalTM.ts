@@ -8,8 +8,10 @@ import {
   TMError
 } from "./types";
 
+
 import { Band } from "./Band";
 import { parseTM, decodeTM, decodeInput } from "./coder";
+import { store} from '../Store'
 
 export class UniversalTM {
   #band: Band = new Band();
@@ -84,6 +86,6 @@ export class UniversalTM {
   }
 
   decodedInput(): string {
-    return this.#initialDecodedInput.join("");
+    return this.#initialDecodedInput.map((index)=> store.dictionary[index] ).join("");
   }
 }
