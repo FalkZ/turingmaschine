@@ -71,7 +71,7 @@ Q61, _, Q9, O, L
 // alte grenze löschen
 Q9, 0, Q9, 0, L
 Q9, 1, Q9, 1, L
-Q9, O, Q93, _, R
+Q9, O, Q93, 0, R
 Q9, I, Q93, 1, R
 // zurück zum gap
 Q93, 0, Q93, 0, R
