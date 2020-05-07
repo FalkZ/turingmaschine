@@ -9,7 +9,7 @@ import {
 } from "./types";
 
 import { Band } from "./Band";
-import { parseTM, decodeTM, decodeInput, encodeTM } from "./coder";
+import { parseTM, decodeTM, decodeInput } from "./coder";
 
 export class UniversalTM {
   #band: Band = new Band();

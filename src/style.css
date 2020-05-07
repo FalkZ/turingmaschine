@@ -82,7 +82,14 @@ h2 {
 
 .col:nth-child(2) {
   width: 100%;
+}
+
+.col {
   margin-left: 40px;
+}
+
+.col:first-child {
+  margin-left: 0;
 }
 
 label span {

@@ -1,6 +1,7 @@
 import { LitElement, html, property, customElement } from "lit-element";
 import plantumlEncoder from "plantuml-encoder";
 import { TransitionMap } from "./tm/types";
+import { store } from "./Store";
 
 const head = `
 skinparam state {
@@ -21,7 +22,7 @@ export const display = (fns: TransitionMap, currentState) => {
   const body = [...fns.entries()]
     .map(
       ([{ currentQ, inputSymbol }, { nextQ, writeSymbol, direction }]) =>
-        `Q${currentQ} --> Q${nextQ}: ${inputSymbol} / ${writeSymbol},${direction}`
+        `Q${currentQ} --> Q${nextQ}: ${store.dictionary[inputSymbol]} / ${store.dictionary[writeSymbol]},${direction}`
     )
     .join("\n");
   const encoded = plantumlEncoder.encode(

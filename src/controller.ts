@@ -20,6 +20,7 @@ const createTMandUpdateUI = () => {
 
 export const onChangeDecodedInput = (value) => {
   store.input = value;
+  localStorage.setItem("input", value);
 
   createTMandUpdateUI();
 };
@@ -34,6 +35,7 @@ export const onChangeEncodedTM = ({ target }) => {
 
 export const onChangeDecodedTM = ({ target }) => {
   store.decodedTM = target.value;
+  localStorage.setItem("decodedTM", target.value);
 
   createTMandUpdateUI();
 };

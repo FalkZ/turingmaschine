@@ -50,7 +50,7 @@ export class UIBand extends LitElement {
         ${this.band.map(
           (nr, index) =>
             html`<div class="band-item" id=${index === 15 ? "active" : ""}>
-              ${nr === DEFAULT_BAND_SYMBOL ? "_" : nr}
+              ${store.dictionary[nr]}
             </div>`
         )}
       </div>
@@ -89,7 +89,9 @@ export class UIMain extends LitElement {
     <div class="flex">
       <div class="col">
       <label>Übergangsfunktionen</label>
-      <textarea id="decodedTM" .value=${store.decodedTM} rows=${countLines(
+      <textarea id="decodedTM" .value=${
+        store.decodedTM
+      } cols="25" rows=${countLines(
       store.decodedTM
     )} @change=${onChangeDecodedTM} @input=${autoResize} ></textarea>
       </div>
@@ -102,6 +104,14 @@ export class UIMain extends LitElement {
       <input id="encodedTM"  value=${
         store.encodedTM
       }  @change=${onChangeEncodedTM} ></input>
+      </div>
+
+      <div class="col">
+      <label>Alphabet</label>
+      ${store.dictionary.map(
+        (letter, index) => html`<p>${letter}: ${"0".repeat(index + 1)}</p>`
+      )}
+
       </div>
       </div>
       

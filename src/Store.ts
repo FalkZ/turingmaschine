@@ -1,6 +1,7 @@
 import { encodeTM, encodeInput } from "./tm/coder";
 import { UniversalTM } from "./tm/UniversalTM";
 import { TMError } from "./tm/types";
+import { multiplication } from "./multiplication";
 
 interface Store {
   reset: () => void;
@@ -9,23 +10,17 @@ interface Store {
   decodedTM: string;
   _TM?: UniversalTM;
   TM: UniversalTM;
-  error: TMError;
+  error?: TMError;
+  dictionary: string[];
 }
 
 export const store: Store = {
-  input: "0001",
-  decodedTM: `
-Q0, 0, Q0, 0, R
-Q2, 0, Q2, 0, R
-Q0, 1, Q2, 1, R
-Q2, 1, Q0, 1, R
-Q0, _, Q1, 0, R
-Q2, _, Q1, 1, R
-  `.trim(),
+  input: localStorage.getItem("input") || "111_101",
+  decodedTM: localStorage.getItem("decodedTM") || multiplication,
   get encodedTM(): string {
     return encodeTM(this.decodedTM) + "111" + encodeInput(this.input);
   },
-  reset: function() {
+  reset: function () {
     this.error = undefined;
     this._TM = new UniversalTM(this.encodedTM);
   },
@@ -36,5 +31,7 @@ Q2, _, Q1, 1, R
   set TM(tm) {
     this._TM = tm;
   },
-  error: undefined
+  dictionary: ["_", "0", "1"],
 };
+
+console.log(store.dictionary);
