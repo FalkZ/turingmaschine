@@ -22,7 +22,7 @@ export const store: Store = {
   get encodedTM(): string {
     return encodeTM(this.decodedTM) + "111" + encodeInput(this.input);
   },
-  reset: function() {
+  reset: function () {
     this.error = undefined;
     this._TM = new UniversalTM(this.encodedTM);
   },
@@ -34,16 +34,5 @@ export const store: Store = {
     this._TM = tm;
   },
   dictionary: ["_", "0", "1"],
-  collapseInput: true
+  collapseInput: true,
 };
-
-export const clearStorage = () => {
-  localStorage.removeItem("input");
-  localStorage.removeItem("decodedTM");
-
-  store.input = "1110_101";
-  store.decodedTM = multiplication;
-  ui.requestUpdate();
-};
-
-console.log(store.dictionary);

@@ -1,12 +1,13 @@
 import { LitElement, html, property, customElement } from "lit-element";
-import { store, clearStorage } from "./Store";
+import { store } from "./Store";
 import {
   onChangeDecodedTM,
   onChangeEncodedTM,
   onChangeDecodedInput,
+  clearStorage,
   run,
   step,
-  reset
+  reset,
 } from "./controller";
 
 import { DEFAULT_BAND_SYMBOL } from "./tm/types";
@@ -17,11 +18,16 @@ export const ui: LitElement = document.createElement("ui-main");
 document.body.appendChild(ui);
 
 const collapse = () =>
-  html `<button class="collapse" @click=${() => {
-    store.collapseInput = !store.collapseInput;
-    ui.requestUpdate();
-    console.log("dsf");
-  }}>${store.collapseInput ? "+" : "-"}</button>`;
+  html`<button
+    class="collapse"
+    @click=${() => {
+      store.collapseInput = !store.collapseInput;
+      ui.requestUpdate();
+      console.log("dsf");
+    }}
+  >
+    ${store.collapseInput ? "+" : "-"}
+  </button>`;
 
 const countLines = (v) => v.split("\n").length;
 
@@ -37,7 +43,7 @@ export class UIBand extends LitElement {
   // name = "World";
 
   render() {
-    return html `
+    return html`
       <style>
         .band-item {
           display: inline-block;
@@ -54,11 +60,12 @@ export class UIBand extends LitElement {
         }
       </style>
       <div>
-        ${this.band.map((nr, index) =>
-      html `<div class="band-item" id=${index === 15 ? "active" : ""}>
+        ${this.band.map(
+          (nr, index) =>
+            html`<div class="band-item" id=${index === 15 ? "active" : ""}>
               ${store.dictionary[nr]}
             </div>`
-    )}
+        )}
       </div>
     `;
   }
@@ -66,7 +73,7 @@ export class UIBand extends LitElement {
 
 const errorMessage = () =>
   store.error
-    ? html `<div class="panel red">
+    ? html`<div class="panel red">
         Fehler: ${store.error.message}
       </div>`
     : "";
@@ -82,9 +89,9 @@ export class UIMain extends LitElement {
       store.TM.isFinished() || (store.error && store.error.isBlocking)
     );
 
-    return html `<div class="panel">
+    return html`<div class="panel">
       <h1>Deterministische Turingmaschine <button class="reset" @click=${() =>
-      clearStorage()}> Maschine zurücksetzen </button></h1>
+        clearStorage()}> Maschine zurücksetzen </button></h1>
       <h2>von Moritz Waser & Falk Zwimpfer</h2>
 
       <p>
@@ -96,27 +103,33 @@ export class UIMain extends LitElement {
     <div class="flex">
       <div class="col">
       <label>Übergangsfunktionen ${collapse()}</label>
-      <textarea id="decodedTM" .value=${store.decodedTM} data-collapse=${store.collapseInput} cols="25" rows=${countLines(
+      <textarea id="decodedTM" .value=${store.decodedTM} data-collapse=${
+      store.collapseInput
+    } cols="25" rows=${countLines(
       store.decodedTM
     )} @change=${onChangeDecodedTM} @input=${autoResize} ></textarea>
       </div>
       <div class="col">
       <label>Input</label>
-      <input id="decodedInput" value=${store.input} @change=${({ target }) =>
+      <input id="decodedInput" .value=${store.input} @change=${({ target }) =>
       onChangeDecodedInput(target.value)} ></input>
 
       <label>Input & Übergangsfunktionen Codiert</label>
-      <input id="encodedTM"  value=${store.encodedTM}  @change=${onChangeEncodedTM} ></input>
+      <input id="encodedTM"  .value=${
+        store.encodedTM
+      }  @change=${onChangeEncodedTM} ></input>
       </div>
 
       <div class="col">
       <label>Alphabet</label>
       <table>
-      ${store.dictionary.map((letter, index) =>
-      html `<tr><td style="font-weight: 800">${letter}:</td><td>${"0".repeat(
-        index + 1
-      )}</td></tr>`
-    )}
+      ${store.dictionary.map(
+        (letter, index) =>
+          html`<tr>
+            <td style="font-weight: 800">${letter}:</td>
+            <td>${"0".repeat(index + 1)}</td>
+          </tr>`
+      )}
     </table>
 
       </div>
@@ -129,7 +142,9 @@ export class UIMain extends LitElement {
       <ui-band .band=${store.TM.band.getSymbols()}></ui-band>
 
       <label>Aktueller Status: <span> Q${store.TM.state} </span></label>
-      <label>Anzahl Berechnungsschritte: <span>${store.TM.iterationCount}</span></label>
+      <label>Anzahl Berechnungsschritte: <span>${
+        store.TM.iterationCount
+      }</span></label>
 
       <button .disabled=${isFinished} @click=${run}>Run</button>
       <button .disabled=${isFinished} @click=${step}>Schritt</button>
@@ -137,7 +152,9 @@ export class UIMain extends LitElement {
       </div>
     
       <div class="panel blue">
-      <ui-diagram .transitions=${store.TM.transitions} .currentState=${store.TM.state}></ui-diagram>
+      <ui-diagram .transitions=${store.TM.transitions} .currentState=${
+      store.TM.state
+    }></ui-diagram>
       </div>
       `;
   }

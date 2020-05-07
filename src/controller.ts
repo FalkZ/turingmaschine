@@ -3,6 +3,7 @@ import { UniversalTM } from "./tm/UniversalTM";
 import { store } from "./Store";
 import { ui } from "./ui";
 import { TMError } from "./tm/types";
+import { multiplication } from "./multiplication";
 
 const onError = (error: TMError) => {
   store.error = error;
@@ -76,5 +77,14 @@ export const reset = () => {
   } catch (error) {
     onError(error);
   }
+  ui.requestUpdate();
+};
+
+export const clearStorage = () => {
+  localStorage.removeItem("input");
+  localStorage.removeItem("decodedTM");
+
+  store.input = "1110_101";
+  store.decodedTM = multiplication;
   ui.requestUpdate();
 };
