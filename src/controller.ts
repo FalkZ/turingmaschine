@@ -46,6 +46,7 @@ export const onChangeDecodedTM = ({ target }) => {
 };
 
 export const run = () => {
+  store.error = undefined;
   try {
     let index = 1000;
     for (; !store.TM.isFinished() && index > 0; index--) {
@@ -61,6 +62,7 @@ export const run = () => {
 };
 
 export const step = () => {
+  store.error = undefined;
   try {
     if (!store.TM.isFinished()) {
       store.TM.step();
