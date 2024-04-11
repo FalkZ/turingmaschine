@@ -1,4 +1,4 @@
-[Turingmachine Simulator](https://turingmaschine.netlify.app/)
+# [Turingmachine Simulator](https://turingmaschine.netlify.app/)
 
 This Webapp encodes a human readable format of a turning machine e.g.:
 ```
